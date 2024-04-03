@@ -1,9 +1,9 @@
 function map(mapper, iterable) {
-    const mapped = [];
-    for (let item of iterable) {
-        mapped.push(mapper(item));
+    const mappedArray = [];
+    for (let i = 0; i < iterable.length; i++) {
+        mappedArray[i] = mapper(iterable[i]);
     }
-    return mapped;
+    return mappedArray;
 }
 
 export default map;
