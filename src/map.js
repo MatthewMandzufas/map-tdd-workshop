@@ -9,6 +9,12 @@ function getIsPlainObject(valueToCheck) {
 function map(mapperFunction, functor) {
     const isPlainObject = getIsPlainObject(functor);
 
+    if (arguments.length === 1) {
+        return function (value) {
+            return map(mapperFunction, value);
+        };
+    }
+
     if (functor === null || functor === undefined) {
         throw new TypeError();
     }
