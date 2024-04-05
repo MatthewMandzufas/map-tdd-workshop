@@ -8,6 +8,14 @@ function getIsPlainObject(valueToCheck) {
 
 function map(mapperFunction, functor) {
     const isPlainObject = getIsPlainObject(functor);
+
+    if (
+        Object.hasOwn(functor, 'map') &&
+        typeof functor.map === 'function' &&
+        functor.map.length === 1
+    ) {
+        return functor.map(mapperFunction);
+    }
     if (Array.isArray(functor)) {
         const mappedFunctor = [];
         for (let i = 0; i < functor.length; i++) {
