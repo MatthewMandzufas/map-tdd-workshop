@@ -20,6 +20,10 @@ function map(mapperFunction, functor) {
             mappedFunctor[key] = mapperFunction(value);
         }
         return mappedFunctor;
+    } else if (typeof functor === 'function') {
+        return function (valueToMap) {
+            return mapperFunction(functor(valueToMap));
+        };
     }
 }
 export default map;
