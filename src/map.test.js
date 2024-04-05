@@ -11,4 +11,15 @@ describe('Map', () => {
         expect(map(dec, {})).toEqual({});
         expect(map(dec, { x: 4, y: 5, z: 6 })).toEqual({ x: 3, y: 4, z: 5 });
     });
+    it('interprets ((->) r) as a functor', function () {
+        const f = function (a) {
+            return a - 1;
+        };
+        const g = function (b) {
+            return b * 2;
+        };
+        const h = map(f, g);
+
+        expect(h(10)).toEqual(10 * 2 - 1);
+    });
 });
