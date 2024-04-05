@@ -21,4 +21,13 @@ describe('Map', () => {
         const h = map(f, g);
         expect(h(10)).toEqual(10 * 2 - 1);
     });
+    it('dispatches to objects that implement `map`', function () {
+        const obj = {
+            x: 100,
+            map: function (f) {
+                return f(this.x);
+            },
+        };
+        expect(map(add1, obj)).toEqual(101);
+    });
 });
