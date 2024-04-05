@@ -6,23 +6,11 @@ function getIsPlainObject(valueToCheck) {
     );
 }
 
-function checkIsTransformerObject(valueToCheck) {
-    return (
-        typeof valueToCheck['@@transducer/init'] === 'function' &&
-        typeof valueToCheck['@@transducer/step'] === 'function' &&
-        typeof valueToCheck['@@transducer/result'] === 'function'
-    );
-}
-
 function map(mapperFunction, functor) {
     const isPlainObject = getIsPlainObject(functor);
-    const isTransformer = checkIsTransformerObject(functor);
 
-    if (isTransformer) {
-        return {
-            f: mapperFunction,
-            xf: functor,
-        };
+    if (functor === null || functor === undefined) {
+        throw new TypeError();
     }
 
     if (
