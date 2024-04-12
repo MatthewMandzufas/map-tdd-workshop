@@ -30,7 +30,7 @@ describe('Map', () => {
         };
         expect(map(add1, obj)).toEqual(101);
     });
-    it.skip('dispatches to transformer objects', () => {
+    it('dispatches to transformer objects', () => {
         const listXf = {
             '@@transducer/init': function () {
                 return [];
