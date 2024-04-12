@@ -14,6 +14,13 @@ function getIsTransformer(valueToCheck) {
     );
 }
 
+function getIsTransducer(valueToCheck) {
+    return (
+        typeof valueToCheck.f === 'function' &&
+        (getIsTransformer(valueToCheck.xf) || getIsPlainObject(valueToCheck.xf))
+    );
+}
+
 function map(mapperFunction, functor) {
     if (arguments.length === 1) {
         return function (value) {
@@ -38,7 +45,7 @@ function map(mapperFunction, functor) {
             mappedFunctor[i] = mapperFunction(functor[i]);
         }
         return mappedFunctor;
-    } else if (getIsTransformer(functor)) {
+    } else if (getIsTransformer(functor) || getIsTransducer(functor)) {
         return { xf: functor, f: mapperFunction };
     } else if (getIsPlainObject(functor)) {
         let mappedFunctor = {};
