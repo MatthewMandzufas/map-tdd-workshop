@@ -4,6 +4,18 @@ describe('Map', () => {
     const times2 = (x) => x * 2;
     const add1 = (x) => x + 1;
     const dec = (x) => x - 1;
+    const listXf = {
+        '@@transducer/init': function () {
+            return [];
+        },
+        '@@transducer/step': function (acc, x) {
+            return acc.concat([x]);
+        },
+        '@@transducer/result': function (x) {
+            return x;
+        },
+    };
+
     it('maps simple functions over arrays', () => {
         expect(map(times2, [1, 2, 3, 4])).toEqual([2, 4, 6, 8]);
     });
@@ -31,17 +43,6 @@ describe('Map', () => {
         expect(map(add1, obj)).toEqual(101);
     });
     it('dispatches to transformer objects', () => {
-        const listXf = {
-            '@@transducer/init': function () {
-                return [];
-            },
-            '@@transducer/step': function (acc, x) {
-                return acc.concat([x]);
-            },
-            '@@transducer/result': function (x) {
-                return x;
-            },
-        };
         expect(map(add1, listXf)).toEqual({ f: add1, xf: listXf });
     });
     it('throws a TypeError on null and undefined', () => {
@@ -52,5 +53,13 @@ describe('Map', () => {
         const mdouble = map(times2);
         const mdec = map(dec);
         expect(mdec(mdouble([10, 20, 30]))).toEqual([19, 39, 59]);
+    });
+    it('can compose transducer-style', () => {
+        const mdouble = map(times2);
+        const mdec = map(dec);
+        const xcomp = mdec(mdouble(listXf));
+
+        expect(xcomp.xf).toEqual({ xf: listXf, f: times2 });
+        expect(xcomp.f).toEqual(dec);
     });
 });
