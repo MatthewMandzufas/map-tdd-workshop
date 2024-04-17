@@ -21,6 +21,19 @@ function getIsTransducer(valueToCheck) {
     );
 }
 
+// function Xmap(functor, mapperFunction) {
+//     this.f = mapperFunction;
+//     this.xf = functor;
+// }
+// Xmap.prototype['@@transducer/init'] =
+//     Xmap.prototype['@@transducer/step'] =
+//     Xmap.prototype['@@transducer/result'] =
+//         function createTransducer(mapperFunction) {
+//             return function (functor) {
+//                 return new Xmap(functor, mapperFunction);
+//             };
+//         };
+
 function map(mapperFunction, functor) {
     if (arguments.length === 1) {
         return function (value) {
@@ -46,7 +59,16 @@ function map(mapperFunction, functor) {
         }
         return mappedFunctor;
     } else if (getIsTransformer(functor) || getIsTransducer(functor)) {
-        return { xf: functor, f: mapperFunction };
+        const mappedFunctor = {
+            '@@transducer/init': functor['@@transducer/init'],
+            '@@transducer/result': functor['@@transducer/result'],
+            '@@transducer/step': function (result, input) {
+                return this.xf['@@transducer/step'](result, this.f(input));
+            },
+            f: mapperFunction,
+            xf: functor,
+        };
+        return mappedFunctor;
     } else if (getIsPlainObject(functor)) {
         let mappedFunctor = {};
         for (const [key, value] of Object.entries(functor)) {
