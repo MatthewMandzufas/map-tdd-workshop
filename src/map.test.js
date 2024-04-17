@@ -1,4 +1,5 @@
 import map from './map';
+const R = require('ramda');
 
 describe('Map', () => {
     const times2 = (x) => x * 2;
@@ -61,5 +62,11 @@ describe('Map', () => {
 
         expect(xcomp.xf).toEqual({ xf: listXf, f: times2 });
         expect(xcomp.f).toEqual(dec);
+    });
+    it('can act as a transducer', () => {
+        expect(R.into([], map(times2), [1, 2, 3, 4])).toEqual([2, 4, 6, 8]);
+        expect(
+            R.transduce(map(times2), R.flip(R.append), [], [1, 2, 3, 4])
+        ).toEqual([2, 4, 6, 8]);
     });
 });

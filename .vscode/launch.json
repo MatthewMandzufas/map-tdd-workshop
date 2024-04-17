@@ -1,0 +1,22 @@
+{
+    "configurations": [
+        {
+            "type": "node",
+            "name": "vscode-jest-tests.v2.rambdaMap-tdd-workshop",
+            "request": "launch",
+            "args": [
+                "test",
+                "--",
+                "--runInBand",
+                "--watchAll=false",
+                "--runTestsByPath",
+                "src/map.test.js"
+            ],
+            "cwd": "/home/matthew/Desktop/code/rambdaMap-tdd-workshop",
+            "console": "integratedTerminal",
+            "internalConsoleOptions": "neverOpen",
+            "disableOptimisticBPs": true,
+            "runtimeExecutable": "npm"
+        }
+    ]
+}
